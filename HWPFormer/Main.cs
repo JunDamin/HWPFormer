@@ -1,7 +1,7 @@
 ﻿using System.Windows.Forms;
 using System;
 using System.IO;
-using System.Timers;
+using System.Threading;
 
 namespace HWPFormer
 {
@@ -20,7 +20,8 @@ namespace HWPFormer
             setupToolBar();
             SetupPage();
             CustomizeDesign();
-            AskPermission();
+            Thread thread = new Thread(() => AskPermission());
+            thread.Start();
         }
 
         public void SetRegister()
@@ -37,9 +38,11 @@ namespace HWPFormer
 
         private void AskPermission()
         {
-            MessageBox.Show("다음 한글의 허가요청에서 모두 허용을 눌러주세요.", "확인", MessageBoxButtons.OK);
+            Thread.Sleep(4000);
+            MessageBox.Show("잠시후 나타날 HwpCtrl 접근 허가요청에서 \"모두 허용(A)\"을 눌러주세요.", "확인", MessageBoxButtons.OK);
             NewHWP();
         }
+
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
         /// Ask when the program closing. 
