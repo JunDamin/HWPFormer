@@ -1,20 +1,30 @@
-using System.IO;
+﻿using System.IO;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using AxHWPCONTROLLib;
 
-
-namespace HWPFormer
+namespace HWPHelper
 {
-	partial class Main
-	{
+    class HwpWrapper
+    {
+        private AxHwpCtrl hwp;
+        public HwpWrapper(AxHWPCONTROLLib.AxHwpCtrl hwpCtrl)
+        {
+            hwp = hwpCtrl;
+        }
+
         public void SetupPage()
         {
 
         }
-		private void setupToolBar()
-		{
-			_ = axHwpCtrl1.SetToolBar(-1, "#0;1:TOOLBAR_MENU"); // #(position);(show):Toolbar name
-            _ = axHwpCtrl1.SetToolBar(-1, "#1;1:TOOLBAR_STANDARD");
-            axHwpCtrl1.ShowToolBar(1);
-		}
+        public void setupToolBar()
+        {
+            _ = hwp.SetToolBar(-1, "#0;1:TOOLBAR_MENU"); // #(position);(show):Toolbar name
+            _ = hwp.SetToolBar(-1, "#1;1:TOOLBAR_STANDARD");
+            hwp.ShowToolBar(1);
+        }
 
         private struct Action
         {
@@ -29,12 +39,12 @@ namespace HWPFormer
         }
         private HWPCONTROLLib.DHwpAction CreateAction(string action)
         {
-            HWPCONTROLLib.DHwpAction act = (HWPCONTROLLib.DHwpAction)axHwpCtrl1.CreateAction(action);
+            HWPCONTROLLib.DHwpAction act = (HWPCONTROLLib.DHwpAction)hwp.CreateAction(action);
             return act;
         }
         private HWPCONTROLLib.DHwpParameterSet CreateSet(string action)
         {
-            HWPCONTROLLib.DHwpParameterSet set = (HWPCONTROLLib.DHwpParameterSet)axHwpCtrl1.CreateSet(action);
+            HWPCONTROLLib.DHwpParameterSet set = (HWPCONTROLLib.DHwpParameterSet)hwp.CreateSet(action);
             return set;
         }
 
@@ -49,18 +59,18 @@ namespace HWPFormer
 
         public void SaveFile()
         {
-            axHwpCtrl1.Save();
+            hwp.Save();
         }
 
         public void SaveAsFile(string path)
         {
             var fpath = Path.GetFullPath(path);
-            axHwpCtrl1.SaveAs(fpath);
+            hwp.SaveAs(fpath);
         }
 
         public void OpenFile(string path)
         {
-            axHwpCtrl1.Open(path);
+            hwp.Open(path);
         }
 
         public void InsertFile(string path)
@@ -72,3 +82,4 @@ namespace HWPFormer
         }
     }
 }
+

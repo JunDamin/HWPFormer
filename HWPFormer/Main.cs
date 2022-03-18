@@ -1,7 +1,9 @@
-﻿using System.Windows.Forms;
-using System;
+﻿using System;
 using System.IO;
 using System.Threading;
+using System.Windows.Forms;
+using HWPHelper;
+using System.Collections.Generic;
 
 namespace HWPFormer
 {
@@ -11,15 +13,17 @@ namespace HWPFormer
         string filePath = string.Empty;
         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
         bool isAutoSave = false;
-        
+        HwpWrapper hwp;
+
         public Main()
         {
             InitializeComponent();
+            hwp = new HwpWrapper(axHwpCtrl1);
             /// register 등록이 내부망에서 안됨
             /// SetRegister();
             setupToolBar();
             SetupPage();
-            CustomizeDesign();
+            InitialDesign();
             Thread thread = new Thread(() => AskPermission());
             thread.Start();
         }
@@ -45,8 +49,8 @@ namespace HWPFormer
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-        /// Ask when the program closing. 
-        /// 
+            /// Ask when the program closing. 
+            /// 
             base.OnFormClosing(e);
             var ans = PreClosingConfirmation();
             if (ans == System.Windows.Forms.DialogResult.Yes)
@@ -80,7 +84,7 @@ namespace HWPFormer
             if (filePath != string.Empty) AskSave();
             filePath = string.Empty;
 
-            var path = "template\\page.hwp";
+            var path = "templates\\page.hwp";
             OpenFile(Path.GetFullPath(path));
             if (isAutoSave)
             {
@@ -97,7 +101,7 @@ namespace HWPFormer
             {
                 //Get the path of specified file
                 filePath = openFileDialog.FileName;
-                OpenFile(filePath);
+                hwp.OpenFile(filePath);
             }
         }
 
@@ -111,13 +115,13 @@ namespace HWPFormer
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     filePath = saveFileDialog.FileName;
-                    SaveAsFile(filePath);
+                    hwp.SaveAsFile(filePath);
                 }
                 else return false;
             }
             else
             {
-                SaveAsFile(filePath);
+                hwp.SaveAsFile(filePath);
             }
             return true;
         }
@@ -132,7 +136,7 @@ namespace HWPFormer
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     filePath = saveFileDialog.FileName;
-                    SaveAsFile(filePath);
+                    hwp.SaveAsFile(filePath);
                 }
             }
 
@@ -142,13 +146,13 @@ namespace HWPFormer
             DialogResult res = MessageBox.Show("기존 내용을 모두 저장하시겠습니까?", "저장하기", MessageBoxButtons.YesNo);
             if (res == DialogResult.Yes)
             {
-                SaveAsFile(filePath);
+                hwp.SaveAsFile(filePath);
             }
         }
 
         private void TimerEvent(object sender, EventArgs e)
         {
-            SaveFile();
+            hwp.SaveFile();
         }
 
         private void AutoSave()
@@ -184,17 +188,63 @@ namespace HWPFormer
             AutoSave();
         }
 
-        private void axHwpCtrl1_NotifyMessage(object sender, AxHWPCONTROLLib._DHwpCtrlEvents_NotifyMessageEvent e)
-        {
-
-        }
-
-        private void CustomizeDesign()
+        private void InitialDesign()
         {
             filePanel.Visible = false;
             contentsPanel.Visible = false;
-            formatPanel.Visible = false;
+            formatFlowLayoutPanel.Visible = false;
+            var templates = new[] { 
+                ("title", "제목"), 
+                ("subtitle", "부제목"),
+                ("subsubtitle", "부부제목"), 
+                ("subsubsubtitle", "부부부제목"),  
+                ("summary", "성과요약"),
+                ("strategy", "전략체계1"), 
+                ("cascading", "전략체계2"), 
+                ("h_table", "가로표1"),
+                ("h_table2", "가로표2"),
+                ("h_table3", "가로표3"),
+                ("h_table_2level", "가로표4"),
+                ("v_table", "세로표1"),
+                ("v_table2", "세로표2"), 
+                ("v_table3", "세로표3")
+            };
+            foreach ( (string name, string text) in templates)
+                {
+
+                Button btn = CreateSubBtn(name, text);
+                btn.Click += new EventHandler(FormatBtn_Click);
+                formatFlowLayoutPanel.Controls.Add(btn);
+                }
+            
         }
+
+        private Button CreateSubBtn(string name, string text)
+        {
+            Button btn = new Button();
+            btn.AutoSize = true;
+            btn.Dock = System.Windows.Forms.DockStyle.Top;
+            btn.FlatAppearance.BorderSize = 0;
+            btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btn.Font = new System.Drawing.Font("나눔스퀘어", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            btn.ForeColor = System.Drawing.Color.LightGray;
+            btn.Location = new System.Drawing.Point(0, 520);
+            btn.Name = name;
+            btn.Padding = new System.Windows.Forms.Padding(35, 0, 0, 0);
+            btn.Size = new System.Drawing.Size(300, 40);
+            btn.Text = text;
+            btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            btn.UseVisualStyleBackColor = false;
+            return btn;
+        }
+
+        void FormatBtn_Click(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            var path = $"templates\\{btn.Name}.hwp";
+            InsertFile(path);
+        }
+
 
         private void ShowSubMenu(Panel subMenu)
         {
@@ -213,7 +263,7 @@ namespace HWPFormer
 
         private void formats_Click(object sender, EventArgs e)
         {
-            ShowSubMenu(formatPanel);
+            ShowSubMenu(formatFlowLayoutPanel);
             isHwpPanel = true;
             switchPanel();
         }
@@ -223,90 +273,6 @@ namespace HWPFormer
             ShowSubMenu(contentsPanel);
             isHwpPanel = false;
             switchPanel();
-        }
-
-        private void title_Click(object sender, EventArgs e)
-        {
-            var path = "template\\title.hwp";
-            InsertFile(path);
-        }
-
-        private void subtitle_Click(object sender, EventArgs e)
-        {
-            var path = "template\\subtitle.hwp";
-            InsertFile(path);
-        }
-
-        private void subsubtitle_Click(object sender, EventArgs e)
-        {
-            var path = "template\\subsubtitle.hwp";
-            InsertFile(path);
-        }
-
-        private void subsubsubtitle_Click(object sender, EventArgs e)
-        {
-            var path = "template\\subsubsubtitle.hwp";
-            InsertFile(path);
-        }
-
-        private void summary_Click(object sender, EventArgs e)
-        {
-            var path = "template\\summary.hwp";
-            InsertFile(path);
-        }
-
-        private void strategy_Click(object sender, EventArgs e)
-        {
-            var path = "template\\strategy.hwp";
-            InsertFile(path);
-        }
-
-        private void cascading_Click(object sender, EventArgs e)
-        {
-            var path = "template\\cascading.hwp";
-            InsertFile(path);
-        }
-
-        private void h_table_Click(object sender, EventArgs e)
-        {
-            var path = "template\\h_table.hwp";
-            InsertFile(path);
-        }
-
-        private void h_table2_Click(object sender, EventArgs e)
-        {
-            var path = "template\\h_table2.hwp";
-            InsertFile(path);
-        }
-
-        private void h_table3_Click(object sender, EventArgs e)
-        {
-            var path = "template\\h_table3.hwp";
-            InsertFile(path);
-        }
-
-        private void h_table_2level_Click(object sender, EventArgs e)
-        {
-            var path = "template\\h_table_2level.hwp";
-            InsertFile(path);
-        }
-
-        private void v_table_Click(object sender, EventArgs e)
-        {
-            var path = "template\\v_table.hwp";
-            InsertFile(path);
-        }
-
-        private void v_table2_Click(object sender, EventArgs e)
-        {
-            var path = "template\\v_table2.hwp";
-            InsertFile(path);
-        }
-
-        private void v_table3_Click(object sender, EventArgs e)
-        {
-            var path = "template\\v_table3.hwp";
-            InsertFile(path);
         }
 
         private void newFile_Click(object sender, EventArgs e)
