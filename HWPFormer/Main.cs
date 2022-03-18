@@ -10,10 +10,9 @@ namespace HWPFormer
     public partial class Main : Form
     {
         private const string FilePathChecker = "FilePathChecker";
-        string filePath = string.Empty;
         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
         bool isAutoSave = false;
-        HwpWrapper hwp;
+        private HwpWrapper hwp;
 
         public Main()
         {
@@ -81,8 +80,8 @@ namespace HWPFormer
 
         private void NewHWP()
         {
-            if (filePath != string.Empty) AskSave();
-            filePath = string.Empty;
+            if (hwp.filePath != string.Empty) hwp.AskSave();
+            hwp.filePath = string.Empty;
 
             var path = "templates\\page.hwp";
             OpenFile(Path.GetFullPath(path));
@@ -100,55 +99,33 @@ namespace HWPFormer
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 //Get the path of specified file
-                filePath = openFileDialog.FileName;
-                hwp.OpenFile(filePath);
+                hwp.filePath = openFileDialog.FileName;
+                hwp.OpenFile(hwp.filePath);
             }
         }
 
         private bool SaveHWP()
         {
-            if (filePath == string.Empty)
+            if (hwp.filePath == string.Empty)
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
                 saveFileDialog.Filter = "hwp files (*.hwp)|*.hwp";
 
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    filePath = saveFileDialog.FileName;
-                    hwp.SaveAsFile(filePath);
+                    hwp.filePath = saveFileDialog.FileName;
+                    hwp.SaveAsFile(hwp.filePath);
                 }
                 else return false;
             }
             else
             {
-                hwp.SaveAsFile(filePath);
+                hwp.SaveAsFile(hwp.filePath);
             }
             return true;
         }
 
-        public void CheckSavePath()
-        {
-            if (filePath == string.Empty)
-            {
-                SaveFileDialog saveFileDialog = new SaveFileDialog();
-                saveFileDialog.Filter = "hwp files (*.hwp)|*.hwp";
 
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    filePath = saveFileDialog.FileName;
-                    hwp.SaveAsFile(filePath);
-                }
-            }
-
-        }
-        private void AskSave()
-        {
-            DialogResult res = MessageBox.Show("기존 내용을 모두 저장하시겠습니까?", "저장하기", MessageBoxButtons.YesNo);
-            if (res == DialogResult.Yes)
-            {
-                hwp.SaveAsFile(filePath);
-            }
-        }
 
         private void TimerEvent(object sender, EventArgs e)
         {
@@ -167,7 +144,7 @@ namespace HWPFormer
             }
             else
             {
-                CheckSavePath();
+                hwp.CheckSavePath();
                 timer.Interval = 10000;
                 timer.Tick += new EventHandler(TimerEvent);
                 timer.Start();
@@ -216,7 +193,7 @@ namespace HWPFormer
                 btn.Click += new EventHandler(FormatBtn_Click);
                 formatFlowLayoutPanel.Controls.Add(btn);
                 }
-            
+            switchFormPanel(false);
         }
 
         private Button CreateSubBtn(string name, string text)
@@ -264,15 +241,13 @@ namespace HWPFormer
         private void formats_Click(object sender, EventArgs e)
         {
             ShowSubMenu(formatFlowLayoutPanel);
-            isHwpPanel = true;
-            switchPanel();
+            switchFormPanel(false);
         }
 
         private void contents_Click(object sender, EventArgs e)
         {
             ShowSubMenu(contentsPanel);
-            isHwpPanel = false;
-            switchPanel();
+            switchFormPanel(false);
         }
 
         private void newFile_Click(object sender, EventArgs e)
@@ -281,7 +256,7 @@ namespace HWPFormer
         }
 
         private Form activeForm = null;
-        private void OpenChildForm(Form childForm)
+        private void OpenChildForm(Form1 childForm)
         {
             if (activeForm != null)
                 activeForm.Close();
@@ -289,28 +264,29 @@ namespace HWPFormer
             childForm.TopLevel = false;
             childForm.FormBorderStyle = FormBorderStyle.None;
             childForm.Dock = DockStyle.Fill;
-            childFormPanel.Controls.Add(childForm);
+            MainContainer.Panel1.Controls.Add(childForm);
             //childFormPanel.Tag = childForm;
             childForm.BringToFront();
             childForm.Show();
         }
 
-        private bool isHwpPanel = true;
-        private void switchPanel()
+        private void switchFormPanel(bool onoff)
         {
-            HwpPanel.Visible = isHwpPanel;
-            childFormPanel.Visible = !(isHwpPanel);
-            isHwpPanel = !(isHwpPanel);
+            MainContainer.SplitterDistance = onoff ? 500 : 0 ;
         }
 
         private void Form1_Click(object sender, EventArgs e)
         {
-            isHwpPanel = false;
-            switchPanel();
+            switchFormPanel(true);
             if (activeForm == null)
-                OpenChildForm(new Form1());
+                OpenChildForm(new Form1(hwp));
             else if (activeForm.GetType() != typeof(Form1))
-                OpenChildForm(new Form1());
+                OpenChildForm(new Form1(hwp));
+        }
+
+        private void open_Click(object sender, EventArgs e)
+        {
+            OpenHWP();
         }
     }
 }

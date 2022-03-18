@@ -30,10 +30,10 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.ControlMenu = new System.Windows.Forms.Panel();
-            this.formatFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.contentsPanel = new System.Windows.Forms.Panel();
             this.Form1 = new System.Windows.Forms.Button();
             this.contents = new System.Windows.Forms.Button();
+            this.formatFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.formats = new System.Windows.Forms.Button();
             this.filePanel = new System.Windows.Forms.Panel();
             this.autoSave = new System.Windows.Forms.Button();
@@ -44,17 +44,18 @@
             this.logoPanel = new System.Windows.Forms.Panel();
             this.LogoName = new System.Windows.Forms.TextBox();
             this.Logo = new System.Windows.Forms.PictureBox();
-            this.MainPanel = new System.Windows.Forms.Panel();
-            this.HwpPanel = new System.Windows.Forms.Panel();
+            this.MainContainer = new System.Windows.Forms.SplitContainer();
+            this.ContentFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.axHwpCtrl1 = new AxHWPCONTROLLib.AxHwpCtrl();
-            this.childFormPanel = new System.Windows.Forms.Panel();
             this.ControlMenu.SuspendLayout();
             this.contentsPanel.SuspendLayout();
             this.filePanel.SuspendLayout();
             this.logoPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Logo)).BeginInit();
-            this.MainPanel.SuspendLayout();
-            this.HwpPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.MainContainer)).BeginInit();
+            this.MainContainer.Panel1.SuspendLayout();
+            this.MainContainer.Panel2.SuspendLayout();
+            this.MainContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.axHwpCtrl1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -78,24 +79,13 @@
             this.ControlMenu.Size = new System.Drawing.Size(300, 1240);
             this.ControlMenu.TabIndex = 1;
             // 
-            // formatFlowLayoutPanel
-            // 
-            this.formatFlowLayoutPanel.AutoSize = true;
-            this.formatFlowLayoutPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(32)))), ((int)(((byte)(39)))));
-            this.formatFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.formatFlowLayoutPanel.Location = new System.Drawing.Point(0, 503);
-            this.formatFlowLayoutPanel.MinimumSize = new System.Drawing.Size(300, 45);
-            this.formatFlowLayoutPanel.Name = "formatFlowLayoutPanel";
-            this.formatFlowLayoutPanel.Size = new System.Drawing.Size(300, 45);
-            this.formatFlowLayoutPanel.TabIndex = 12;
-            // 
             // contentsPanel
             // 
             this.contentsPanel.AutoScroll = true;
             this.contentsPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(32)))), ((int)(((byte)(39)))));
             this.contentsPanel.Controls.Add(this.Form1);
             this.contentsPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.contentsPanel.Location = new System.Drawing.Point(0, 395);
+            this.contentsPanel.Location = new System.Drawing.Point(0, 440);
             this.contentsPanel.Name = "contentsPanel";
             this.contentsPanel.Size = new System.Drawing.Size(300, 108);
             this.contentsPanel.TabIndex = 10;
@@ -127,7 +117,7 @@
             this.contents.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(21)))), ((int)(((byte)(51)))));
             this.contents.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.contents.ForeColor = System.Drawing.Color.LightGray;
-            this.contents.Location = new System.Drawing.Point(0, 350);
+            this.contents.Location = new System.Drawing.Point(0, 395);
             this.contents.Name = "contents";
             this.contents.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.contents.Size = new System.Drawing.Size(300, 45);
@@ -136,6 +126,17 @@
             this.contents.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.contents.UseVisualStyleBackColor = false;
             this.contents.Click += new System.EventHandler(this.contents_Click);
+            // 
+            // formatFlowLayoutPanel
+            // 
+            this.formatFlowLayoutPanel.AutoSize = true;
+            this.formatFlowLayoutPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(32)))), ((int)(((byte)(39)))));
+            this.formatFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.formatFlowLayoutPanel.Location = new System.Drawing.Point(0, 350);
+            this.formatFlowLayoutPanel.MinimumSize = new System.Drawing.Size(300, 45);
+            this.formatFlowLayoutPanel.Name = "formatFlowLayoutPanel";
+            this.formatFlowLayoutPanel.Size = new System.Drawing.Size(300, 45);
+            this.formatFlowLayoutPanel.TabIndex = 12;
             // 
             // formats
             // 
@@ -202,6 +203,7 @@
             this.open.Text = "불러오기";
             this.open.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.open.UseVisualStyleBackColor = true;
+            this.open.Click += new System.EventHandler(this.open_Click);
             // 
             // save
             // 
@@ -293,26 +295,33 @@
             this.Logo.TabIndex = 0;
             this.Logo.TabStop = false;
             // 
-            // MainPanel
+            // MainContainer
             // 
-            this.MainPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.MainPanel.Controls.Add(this.HwpPanel);
-            this.MainPanel.Controls.Add(this.childFormPanel);
-            this.MainPanel.Location = new System.Drawing.Point(300, 0);
-            this.MainPanel.Name = "MainPanel";
-            this.MainPanel.Size = new System.Drawing.Size(1650, 1240);
-            this.MainPanel.TabIndex = 4;
+            this.MainContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MainContainer.Location = new System.Drawing.Point(300, 0);
+            this.MainContainer.Name = "MainContainer";
             // 
-            // HwpPanel
+            // MainContainer.Panel1
             // 
-            this.HwpPanel.Controls.Add(this.axHwpCtrl1);
-            this.HwpPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.HwpPanel.Location = new System.Drawing.Point(0, 0);
-            this.HwpPanel.Name = "HwpPanel";
-            this.HwpPanel.Size = new System.Drawing.Size(1650, 1240);
-            this.HwpPanel.TabIndex = 2;
+            this.MainContainer.Panel1.Controls.Add(this.ContentFlowLayoutPanel);
+            this.MainContainer.Panel1MinSize = 0;
+            // 
+            // MainContainer.Panel2
+            // 
+            this.MainContainer.Panel2.Controls.Add(this.axHwpCtrl1);
+            this.MainContainer.Panel2MinSize = 0;
+            this.MainContainer.Size = new System.Drawing.Size(1650, 1240);
+            this.MainContainer.SplitterDistance = 25;
+            this.MainContainer.SplitterWidth = 1;
+            this.MainContainer.TabIndex = 5;
+            // 
+            // ContentFlowLayoutPanel
+            // 
+            this.ContentFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ContentFlowLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.ContentFlowLayoutPanel.Name = "ContentFlowLayoutPanel";
+            this.ContentFlowLayoutPanel.Size = new System.Drawing.Size(25, 1240);
+            this.ContentFlowLayoutPanel.TabIndex = 0;
             // 
             // axHwpCtrl1
             // 
@@ -321,24 +330,16 @@
             this.axHwpCtrl1.Location = new System.Drawing.Point(0, 0);
             this.axHwpCtrl1.Name = "axHwpCtrl1";
             this.axHwpCtrl1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axHwpCtrl1.OcxState")));
-            this.axHwpCtrl1.Size = new System.Drawing.Size(1650, 1240);
-            this.axHwpCtrl1.TabIndex = 0;
-            // 
-            // childFormPanel
-            // 
-            this.childFormPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.childFormPanel.Location = new System.Drawing.Point(0, 0);
-            this.childFormPanel.Name = "childFormPanel";
-            this.childFormPanel.Size = new System.Drawing.Size(1650, 1240);
-            this.childFormPanel.TabIndex = 3;
+            this.axHwpCtrl1.Size = new System.Drawing.Size(1624, 1240);
+            this.axHwpCtrl1.TabIndex = 1;
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 26F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1950, 1240);
+            this.Controls.Add(this.MainContainer);
             this.Controls.Add(this.ControlMenu);
-            this.Controls.Add(this.MainPanel);
             this.Font = new System.Drawing.Font("나눔스퀘어", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -353,8 +354,10 @@
             this.logoPanel.ResumeLayout(false);
             this.logoPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.Logo)).EndInit();
-            this.MainPanel.ResumeLayout(false);
-            this.HwpPanel.ResumeLayout(false);
+            this.MainContainer.Panel1.ResumeLayout(false);
+            this.MainContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.MainContainer)).EndInit();
+            this.MainContainer.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.axHwpCtrl1)).EndInit();
             this.ResumeLayout(false);
 
@@ -363,8 +366,6 @@
         #endregion
         private System.Windows.Forms.Panel ControlMenu;
         private System.Windows.Forms.Button files;
-        private System.Windows.Forms.Panel HwpPanel;
-        private AxHWPCONTROLLib.AxHwpCtrl axHwpCtrl1;
         private System.Windows.Forms.Panel contentsPanel;
         private System.Windows.Forms.Button contents;
         private System.Windows.Forms.FlowLayoutPanel formatFlowLayoutPanel;
@@ -378,8 +379,9 @@
         private System.Windows.Forms.PictureBox Logo;
         private System.Windows.Forms.TextBox LogoName;
         private System.Windows.Forms.Button Form1;
-        private System.Windows.Forms.Panel childFormPanel;
-        private System.Windows.Forms.Panel MainPanel;
+        private System.Windows.Forms.SplitContainer MainContainer;
+        private AxHWPCONTROLLib.AxHwpCtrl axHwpCtrl1;
+        private System.Windows.Forms.FlowLayoutPanel ContentFlowLayoutPanel;
     }
 }
 

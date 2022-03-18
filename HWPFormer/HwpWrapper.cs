@@ -1,5 +1,5 @@
 ﻿using System.IO;
-using System.Collections.Generic;
+using System.Windows.Forms;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,12 +7,14 @@ using AxHWPCONTROLLib;
 
 namespace HWPHelper
 {
-    class HwpWrapper
+    public class HwpWrapper
     {
-        private AxHwpCtrl hwp;
+        public AxHwpCtrl ctrl;
+        public string filePath = string.Empty;
+        
         public HwpWrapper(AxHWPCONTROLLib.AxHwpCtrl hwpCtrl)
         {
-            hwp = hwpCtrl;
+            ctrl = hwpCtrl;
         }
 
         public void SetupPage()
@@ -21,9 +23,9 @@ namespace HWPHelper
         }
         public void setupToolBar()
         {
-            _ = hwp.SetToolBar(-1, "#0;1:TOOLBAR_MENU"); // #(position);(show):Toolbar name
-            _ = hwp.SetToolBar(-1, "#1;1:TOOLBAR_STANDARD");
-            hwp.ShowToolBar(1);
+            _ = ctrl.SetToolBar(-1, "#0;1:TOOLBAR_MENU"); // #(position);(show):Toolbar name
+            _ = ctrl.SetToolBar(-1, "#1;1:TOOLBAR_STANDARD");
+            ctrl.ShowToolBar(1);
         }
 
         private struct Action
@@ -39,12 +41,12 @@ namespace HWPHelper
         }
         private HWPCONTROLLib.DHwpAction CreateAction(string action)
         {
-            HWPCONTROLLib.DHwpAction act = (HWPCONTROLLib.DHwpAction)hwp.CreateAction(action);
+            HWPCONTROLLib.DHwpAction act = (HWPCONTROLLib.DHwpAction)ctrl.CreateAction(action);
             return act;
         }
         private HWPCONTROLLib.DHwpParameterSet CreateSet(string action)
         {
-            HWPCONTROLLib.DHwpParameterSet set = (HWPCONTROLLib.DHwpParameterSet)hwp.CreateSet(action);
+            HWPCONTROLLib.DHwpParameterSet set = (HWPCONTROLLib.DHwpParameterSet)ctrl.CreateSet(action);
             return set;
         }
 
@@ -59,18 +61,18 @@ namespace HWPHelper
 
         public void SaveFile()
         {
-            hwp.Save();
+            ctrl.Save();
         }
 
         public void SaveAsFile(string path)
         {
             var fpath = Path.GetFullPath(path);
-            hwp.SaveAs(fpath);
+            ctrl.SaveAs(fpath);
         }
 
         public void OpenFile(string path)
         {
-            hwp.Open(path);
+            ctrl.Open(path);
         }
 
         public void InsertFile(string path)
@@ -79,6 +81,31 @@ namespace HWPHelper
             var fpath = Path.GetFullPath(path);
             actionSet.Set.SetItem("FileName", fpath);
             actionSet.Act.Execute(actionSet.Set);
+        }
+
+        public void CheckSavePath()
+        {
+            if (filePath == string.Empty)
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "hwp files (*.hwp)|*.hwp";
+
+                if (saveFileDialog.ShowDialog() == DialogResult.Yes)
+                {
+                    filePath = saveFileDialog.FileName;
+                    SaveAsFile(filePath);
+                }
+            }
+
+        }
+        public void AskSave()
+        {
+            DialogResult res = MessageBox.Show("저장하지 않은 내용은 삭제됩니다. 기존 내용을 모두 저장하시겠습니까?", "저장하기", MessageBoxButtons.YesNo);
+            if (res == DialogResult.Yes)
+            {
+                CheckSavePath();
+                SaveAsFile(filePath);
+            }
         }
     }
 }
