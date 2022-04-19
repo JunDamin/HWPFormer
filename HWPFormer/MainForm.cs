@@ -11,14 +11,14 @@ namespace HWPFormer
     {
         private const string FilePathChecker = "FilePathChecker";
         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
-        private HwpController hwp;
+        private HwpWrapper hwp;
         bool isAutoSave = false;
         
 
         public MainForm()
         {
             InitializeComponent();
-            hwp = new HwpController(axHwpCtrl1);
+            hwp = new HwpWrapper(axHwpCtrl1);
             /// register 등록이 내부망에서 안됨
             /// SetRegister();
             hwp.setupToolBar();

@@ -14,9 +14,9 @@ namespace HWPFormer
 {
     public partial class Form1 : Form
     {
-        private HwpController hwp;
+        private HwpWrapper hwp;
         private bool isNew;
-        public Form1(HwpController hwpctrl)
+        public Form1(HwpWrapper hwpctrl)
         {
 
             hwp = hwpctrl;

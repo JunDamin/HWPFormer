@@ -1,100 +1,118 @@
-﻿using System.IO;
-using System.Windows.Forms;
+﻿using System;
+using System.IO;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using AxHWPCONTROLLib;
+using System.Windows.Forms;
 
 namespace HWPHelper
 {
     public class HwpWrapper
     {
-        public AxHwpCtrl ctrl;
+        public HwpAPI hwp;
         public string filePath = string.Empty;
-        
+
         public HwpWrapper(AxHWPCONTROLLib.AxHwpCtrl hwpCtrl)
         {
-            ctrl = hwpCtrl;
+            hwp = new HwpAPI(hwpCtrl);
         }
 
-        public void SetRegister()
+        public void setupToolBar() => hwp.setupToolBar();
+        public void SetupPage() => hwp.SetupPage();
+
+        public void Select() => hwp.ctrl.Select();
+
+        public void SaveFile() => hwp.SaveFile();
+
+        public void SaveAsFile(string path) => hwp.SaveAsFile(path);
+
+        public void InsertFile(string path) => hwp.InsertFile(path);
+
+        public void OpenFile(string path) => hwp.OpenFile(path);
+
+        public void PutFieldText(string key, string text) => hwp.ctrl.PutFieldText(key, text);
+
+        public void AskPermission()
         {
-            const string HNCRoot = @"HKEY_Current_User\Software\HNC\HwpCtrl\Modules";
-            ctrl.Clear();
-            string myProjectPath = Path.GetFullPath(".\\");
-            if (Microsoft.Win32.Registry.GetValue(HNCRoot, "FilePathCheckerModuleExample", "Not Exist").Equals("Not Exist"))
+            Thread.Sleep(4000);
+            MessageBox.Show("잠시후 나타날 HwpCtrl 접근 허가요청에서 \"모두 허용(A)\"을 눌러주세요.", "확인", MessageBoxButtons.OK);
+            NewHWP();
+        }
+
+        public void CheckSavePath()
+        {
+            if (hwp.filePath == string.Empty)
             {
-                Microsoft.Win32.Registry.SetValue(HNCRoot, "FilePathCheckerModuleExample", myProjectPath + "FilePathCheckerModuleExample.dll");
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "hwp files (*.hwp)|*.hwp";
+
+                if (saveFileDialog.ShowDialog() == DialogResult.Yes)
+                {
+                    hwp.filePath = saveFileDialog.FileName;
+                    hwp.SaveAsFile(hwp.filePath);
+                }
             }
-            ctrl.RegisterModule("FilePathCheckDLL", "FilePathCheckerModuleExample");
         }
 
-        public void SetupPage()
+        public void AskSave()
         {
-
-        }
-        public void setupToolBar()
-        {
-            _ = ctrl.SetToolBar(-1, "#0;1:TOOLBAR_MENU"); // #(position);(show):Toolbar name
-            _ = ctrl.SetToolBar(-1, "#1;1:TOOLBAR_STANDARD");
-            ctrl.ShowToolBar(1);
-        }
-
-        private struct Action
-        {
-            public Action(HWPCONTROLLib.DHwpAction action, HWPCONTROLLib.DHwpParameterSet param)
+            DialogResult res = MessageBox.Show("저장하지 않은 내용은 삭제됩니다. 기존 내용을 모두 저장하시겠습니까?", "저장하기", MessageBoxButtons.YesNo);
+            if (res == DialogResult.Yes)
             {
-                Act = action;
-                Set = param;
+                CheckSavePath();
+                hwp.SaveAsFile(hwp.filePath);
             }
-
-            public HWPCONTROLLib.DHwpAction Act { get; }
-            public HWPCONTROLLib.DHwpParameterSet Set { get; }
-        }
-        private HWPCONTROLLib.DHwpAction CreateAction(string action)
-        {
-            HWPCONTROLLib.DHwpAction act = (HWPCONTROLLib.DHwpAction)ctrl.CreateAction(action);
-            return act;
-        }
-        private HWPCONTROLLib.DHwpParameterSet CreateSet(string action)
-        {
-            HWPCONTROLLib.DHwpParameterSet set = (HWPCONTROLLib.DHwpParameterSet)ctrl.CreateSet(action);
-            return set;
         }
 
-        private Action GetActionSet(string action)
+        public DialogResult PreClosingConfirmation()
         {
-            HWPCONTROLLib.DHwpAction act = CreateAction(action);
-            HWPCONTROLLib.DHwpParameterSet set = CreateSet(action);
-            act.GetDefault(set);
-            var actionSet = new Action(act, set);
-            return actionSet;
+            DialogResult res = MessageBox.Show("프로그램을 종료하면 저장하지 않은 내용은 모두 사라집니다. 내용을 저장하시겠습니까?", "저장하기", MessageBoxButtons.YesNoCancel);
+            return res;
         }
 
-        public void SaveFile()
+        public void NewHWP()
         {
-            ctrl.Save();
+            if (hwp.filePath != string.Empty) AskSave();
+            hwp.filePath = string.Empty;
+
+            var path = "templates\\page.hwp";
+            hwp.OpenFile(Path.GetFullPath(path));
+        }
+        public void OpenHWP()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "hwp files (*.hwp)|*.hwp|All files (*.*)|*.*";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                //Get the path of specified file
+                hwp.filePath = openFileDialog.FileName;
+                hwp.OpenFile(hwp.filePath);
+            }
         }
 
-        public void SaveAsFile(string path)
+        public bool SaveHWP()
         {
-            var fpath = Path.GetFullPath(path);
-            ctrl.SaveAs(fpath);
-        }
+            if (hwp.filePath == string.Empty)
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Filter = "hwp files (*.hwp)|*.hwp";
 
-        public void OpenFile(string path)
-        {
-            ctrl.Open(path);
-        }
-
-        public void InsertFile(string path)
-        {
-            var actionSet = GetActionSet("InsertFile");
-            var fpath = Path.GetFullPath(path);
-            actionSet.Set.SetItem("FileName", fpath);
-            actionSet.Act.Execute(actionSet.Set);
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    hwp.filePath = saveFileDialog.FileName;
+                    hwp.SaveAsFile(hwp.filePath);
+                }
+                else return false;
+            }
+            else
+            {
+                hwp.SaveAsFile(hwp.filePath);
+            }
+            return true;
         }
 
     }
 }
-
