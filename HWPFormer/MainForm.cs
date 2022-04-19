@@ -11,39 +11,21 @@ namespace HWPFormer
     {
         private const string FilePathChecker = "FilePathChecker";
         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
+        private HwpController hwp;
         bool isAutoSave = false;
-        private HwpWrapper hwp;
+        
 
         public MainForm()
         {
             InitializeComponent();
-            hwp = new HwpWrapper(axHwpCtrl1);
+            hwp = new HwpController(axHwpCtrl1);
             /// register 등록이 내부망에서 안됨
             /// SetRegister();
-            setupToolBar();
-            SetupPage();
+            hwp.setupToolBar();
+            hwp.SetupPage();
             InitialDesign();
-            Thread thread = new Thread(() => AskPermission());
+            Thread thread = new Thread(() => hwp.AskPermission());
             thread.Start();
-        }
-
-        public void SetRegister()
-        {
-            const string HNCRoot = @"HKEY_Current_User\Software\HNC\HwpCtrl\Modules";
-            axHwpCtrl1.Clear();
-            string myProjectPath = Path.GetFullPath(".\\");
-            if (Microsoft.Win32.Registry.GetValue(HNCRoot, "FilePathCheckerModuleExample", "Not Exist").Equals("Not Exist"))
-            {
-                Microsoft.Win32.Registry.SetValue(HNCRoot, "FilePathCheckerModuleExample", myProjectPath + "FilePathCheckerModuleExample.dll");
-            }
-            axHwpCtrl1.RegisterModule("FilePathCheckDLL", "FilePathCheckerModuleExample");
-        }
-
-        private void AskPermission()
-        {
-            Thread.Sleep(4000);
-            MessageBox.Show("잠시후 나타날 HwpCtrl 접근 허가요청에서 \"모두 허용(A)\"을 눌러주세요.", "확인", MessageBoxButtons.OK);
-            NewHWP();
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -51,10 +33,10 @@ namespace HWPFormer
             /// Ask when the program closing. 
             /// 
             base.OnFormClosing(e);
-            var ans = PreClosingConfirmation();
+            var ans = hwp.PreClosingConfirmation();
             if (ans == System.Windows.Forms.DialogResult.Yes)
             {
-                if (SaveHWP())
+                if (hwp.SaveHWP())
                 {
                     Dispose(true);
                     Application.Exit();
@@ -72,66 +54,12 @@ namespace HWPFormer
             }
         }
 
-        private DialogResult PreClosingConfirmation()
-        {
-            DialogResult res = MessageBox.Show("프로그램을 종료하면 저장하지 않은 내용은 모두 사라집니다. 내용을 저장하시겠습니까?", "저장하기", MessageBoxButtons.YesNoCancel);
-            return res;
-        }
-
-        private void NewHWP()
-        {
-            if (hwp.filePath != string.Empty) hwp.AskSave();
-            hwp.filePath = string.Empty;
-
-            var path = "templates\\page.hwp";
-            OpenFile(Path.GetFullPath(path));
-            if (isAutoSave)
-            {
-                AutoSave();
-
-            }
-        }
-        private void OpenHWP()
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "hwp files (*.hwp)|*.hwp|All files (*.*)|*.*";
-
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                //Get the path of specified file
-                hwp.filePath = openFileDialog.FileName;
-                hwp.OpenFile(hwp.filePath);
-            }
-        }
-
-        private bool SaveHWP()
-        {
-            if (hwp.filePath == string.Empty)
-            {
-                SaveFileDialog saveFileDialog = new SaveFileDialog();
-                saveFileDialog.Filter = "hwp files (*.hwp)|*.hwp";
-
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    hwp.filePath = saveFileDialog.FileName;
-                    hwp.SaveAsFile(hwp.filePath);
-                }
-                else return false;
-            }
-            else
-            {
-                hwp.SaveAsFile(hwp.filePath);
-            }
-            return true;
-        }
-
 
 
         private void TimerEvent(object sender, EventArgs e)
         {
             hwp.SaveFile();
         }
-
         private void AutoSave()
         {
             if (isAutoSave)
@@ -154,9 +82,10 @@ namespace HWPFormer
                 isAutoSave = true;
             }
         }
+
         private void Save_Click(object sender, EventArgs e)
         {
-            SaveHWP();
+            hwp.SaveHWP();
         }
 
 
@@ -219,8 +148,8 @@ namespace HWPFormer
         {
             Button btn = sender as Button;
             var path = $"templates\\{btn.Name}.hwp";
-            InsertFile(path);
-            hwp.ctrl.Select();
+            hwp.InsertFile(path);
+            hwp.Select();
         }
 
 
@@ -253,8 +182,8 @@ namespace HWPFormer
 
         private void newFile_Click(object sender, EventArgs e)
         {
-            NewHWP();
-            hwp.ctrl.Select();
+            hwp.NewHWP();
+            hwp.Select();
         }
 
         private Form activeForm = null;
@@ -288,7 +217,7 @@ namespace HWPFormer
 
         private void open_Click(object sender, EventArgs e)
         {
-            OpenHWP();
+            hwp.OpenHWP();
         }
     }
 }

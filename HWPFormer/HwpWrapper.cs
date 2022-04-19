@@ -17,6 +17,18 @@ namespace HWPHelper
             ctrl = hwpCtrl;
         }
 
+        public void SetRegister()
+        {
+            const string HNCRoot = @"HKEY_Current_User\Software\HNC\HwpCtrl\Modules";
+            ctrl.Clear();
+            string myProjectPath = Path.GetFullPath(".\\");
+            if (Microsoft.Win32.Registry.GetValue(HNCRoot, "FilePathCheckerModuleExample", "Not Exist").Equals("Not Exist"))
+            {
+                Microsoft.Win32.Registry.SetValue(HNCRoot, "FilePathCheckerModuleExample", myProjectPath + "FilePathCheckerModuleExample.dll");
+            }
+            ctrl.RegisterModule("FilePathCheckDLL", "FilePathCheckerModuleExample");
+        }
+
         public void SetupPage()
         {
 
@@ -83,30 +95,6 @@ namespace HWPHelper
             actionSet.Act.Execute(actionSet.Set);
         }
 
-        public void CheckSavePath()
-        {
-            if (filePath == string.Empty)
-            {
-                SaveFileDialog saveFileDialog = new SaveFileDialog();
-                saveFileDialog.Filter = "hwp files (*.hwp)|*.hwp";
-
-                if (saveFileDialog.ShowDialog() == DialogResult.Yes)
-                {
-                    filePath = saveFileDialog.FileName;
-                    SaveAsFile(filePath);
-                }
-            }
-
-        }
-        public void AskSave()
-        {
-            DialogResult res = MessageBox.Show("저장하지 않은 내용은 삭제됩니다. 기존 내용을 모두 저장하시겠습니까?", "저장하기", MessageBoxButtons.YesNo);
-            if (res == DialogResult.Yes)
-            {
-                CheckSavePath();
-                SaveAsFile(filePath);
-            }
-        }
     }
 }
 

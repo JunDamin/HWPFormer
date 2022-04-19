@@ -14,9 +14,9 @@ namespace HWPFormer
 {
     public partial class Form1 : Form
     {
-        private HwpWrapper hwp;
+        private HwpController hwp;
         private bool isNew;
-        public Form1(HwpWrapper hwpctrl)
+        public Form1(HwpController hwpctrl)
         {
 
             hwp = hwpctrl;
@@ -26,11 +26,11 @@ namespace HWPFormer
 
         private void formBtn_Click(object sender, EventArgs e)
         {
-            hwp.AskSave();
+            // MainForm.AskSave();
             var path = "forms\\form1.hwp";
             hwp.OpenFile(Path.GetFullPath(path));
-            hwp.ctrl.PutFieldText("name", name.Text);
-            hwp.ctrl.PutFieldText("value", value.Text);
+            hwp.PutFieldText("name", name.Text);
+            hwp.PutFieldText("value", value.Text);
         }
     }
 }
