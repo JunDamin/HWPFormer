@@ -3,7 +3,7 @@ using System.IO;
 
 namespace HWPFormer
 {
-	partial class Main
+	partial class MainForm
 	{
         public void SetupPage()
         {

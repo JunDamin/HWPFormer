@@ -1,6 +1,6 @@
 ﻿namespace HWPFormer
 {
-    partial class Main
+    partial class MainForm
     {
         /// <summary>
         /// 필수 디자이너 변수입니다.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.ControlMenu = new System.Windows.Forms.Panel();
             this.contentsPanel = new System.Windows.Forms.Panel();
             this.Form1 = new System.Windows.Forms.Button();
@@ -72,7 +72,7 @@
             this.ControlMenu.Controls.Add(this.logoPanel);
             this.ControlMenu.Cursor = System.Windows.Forms.Cursors.Default;
             this.ControlMenu.Dock = System.Windows.Forms.DockStyle.Left;
-            this.ControlMenu.Font = new System.Drawing.Font("나눔스퀘어", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.ControlMenu.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.ControlMenu.ForeColor = System.Drawing.Color.DarkGray;
             this.ControlMenu.Location = new System.Drawing.Point(0, 0);
             this.ControlMenu.Name = "ControlMenu";
@@ -96,7 +96,7 @@
             this.Form1.Dock = System.Windows.Forms.DockStyle.Top;
             this.Form1.FlatAppearance.BorderSize = 0;
             this.Form1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Form1.Font = new System.Drawing.Font("나눔스퀘어", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.Form1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Form1.ForeColor = System.Drawing.Color.LightGray;
             this.Form1.Location = new System.Drawing.Point(0, 0);
             this.Form1.Name = "Form1";
@@ -145,7 +145,7 @@
             this.formats.FlatAppearance.BorderSize = 0;
             this.formats.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(21)))), ((int)(((byte)(51)))));
             this.formats.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.formats.Font = new System.Drawing.Font("나눔스퀘어", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            this.formats.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.formats.ForeColor = System.Drawing.Color.LightGray;
             this.formats.Location = new System.Drawing.Point(0, 305);
             this.formats.Name = "formats";
@@ -273,7 +273,7 @@
             this.LogoName.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.LogoName.BackColor = System.Drawing.SystemColors.WindowText;
             this.LogoName.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.LogoName.Font = new System.Drawing.Font("나눔스퀘어 Bold", 13.875F);
+            this.LogoName.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.875F);
             this.LogoName.ForeColor = System.Drawing.SystemColors.Info;
             this.LogoName.Location = new System.Drawing.Point(100, 26);
             this.LogoName.Name = "LogoName";
@@ -333,17 +333,16 @@
             this.axHwpCtrl1.Size = new System.Drawing.Size(1624, 1240);
             this.axHwpCtrl1.TabIndex = 1;
             // 
-            // Main
+            // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 26F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(14F, 29F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1950, 1240);
             this.Controls.Add(this.MainContainer);
             this.Controls.Add(this.ControlMenu);
-            this.Font = new System.Drawing.Font("나눔스퀘어", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "Main";
+            this.Name = "MainForm";
             this.Text = "한글 자동화";
             this.ControlMenu.ResumeLayout(false);
             this.ControlMenu.PerformLayout();

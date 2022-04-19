@@ -7,14 +7,14 @@ using System.Collections.Generic;
 
 namespace HWPFormer
 {
-    public partial class Main : Form
+    public partial class MainForm : Form
     {
         private const string FilePathChecker = "FilePathChecker";
         System.Windows.Forms.Timer timer = new System.Windows.Forms.Timer();
         bool isAutoSave = false;
         private HwpWrapper hwp;
 
-        public Main()
+        public MainForm()
         {
             InitializeComponent();
             hwp = new HwpWrapper(axHwpCtrl1);
@@ -220,6 +220,7 @@ namespace HWPFormer
             Button btn = sender as Button;
             var path = $"templates\\{btn.Name}.hwp";
             InsertFile(path);
+            hwp.ctrl.Select();
         }
 
 
@@ -253,6 +254,7 @@ namespace HWPFormer
         private void newFile_Click(object sender, EventArgs e)
         {
             NewHWP();
+            hwp.ctrl.Select();
         }
 
         private Form activeForm = null;
