@@ -34,7 +34,6 @@
             this.Form1 = new System.Windows.Forms.Button();
             this.contents = new System.Windows.Forms.Button();
             this.formatFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.formats = new System.Windows.Forms.Button();
             this.filePanel = new System.Windows.Forms.Panel();
             this.autoSave = new System.Windows.Forms.Button();
             this.open = new System.Windows.Forms.Button();
@@ -66,7 +65,6 @@
             this.ControlMenu.Controls.Add(this.contentsPanel);
             this.ControlMenu.Controls.Add(this.contents);
             this.ControlMenu.Controls.Add(this.formatFlowLayoutPanel);
-            this.ControlMenu.Controls.Add(this.formats);
             this.ControlMenu.Controls.Add(this.filePanel);
             this.ControlMenu.Controls.Add(this.files);
             this.ControlMenu.Controls.Add(this.logoPanel);
@@ -85,7 +83,7 @@
             this.contentsPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(32)))), ((int)(((byte)(39)))));
             this.contentsPanel.Controls.Add(this.Form1);
             this.contentsPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.contentsPanel.Location = new System.Drawing.Point(0, 440);
+            this.contentsPanel.Location = new System.Drawing.Point(0, 395);
             this.contentsPanel.Name = "contentsPanel";
             this.contentsPanel.Size = new System.Drawing.Size(300, 108);
             this.contentsPanel.TabIndex = 10;
@@ -117,7 +115,7 @@
             this.contents.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(21)))), ((int)(((byte)(51)))));
             this.contents.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.contents.ForeColor = System.Drawing.Color.LightGray;
-            this.contents.Location = new System.Drawing.Point(0, 395);
+            this.contents.Location = new System.Drawing.Point(0, 350);
             this.contents.Name = "contents";
             this.contents.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.contents.Size = new System.Drawing.Size(300, 45);
@@ -132,30 +130,11 @@
             this.formatFlowLayoutPanel.AutoSize = true;
             this.formatFlowLayoutPanel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(32)))), ((int)(((byte)(39)))));
             this.formatFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.formatFlowLayoutPanel.Location = new System.Drawing.Point(0, 350);
+            this.formatFlowLayoutPanel.Location = new System.Drawing.Point(0, 305);
             this.formatFlowLayoutPanel.MinimumSize = new System.Drawing.Size(300, 45);
             this.formatFlowLayoutPanel.Name = "formatFlowLayoutPanel";
             this.formatFlowLayoutPanel.Size = new System.Drawing.Size(300, 45);
             this.formatFlowLayoutPanel.TabIndex = 12;
-            // 
-            // formats
-            // 
-            this.formats.AutoSize = true;
-            this.formats.Dock = System.Windows.Forms.DockStyle.Top;
-            this.formats.FlatAppearance.BorderSize = 0;
-            this.formats.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(21)))), ((int)(((byte)(51)))));
-            this.formats.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.formats.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
-            this.formats.ForeColor = System.Drawing.Color.LightGray;
-            this.formats.Location = new System.Drawing.Point(0, 305);
-            this.formats.Name = "formats";
-            this.formats.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.formats.Size = new System.Drawing.Size(300, 45);
-            this.formats.TabIndex = 6;
-            this.formats.Text = "경영평가 양식 패키지";
-            this.formats.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.formats.UseVisualStyleBackColor = false;
-            this.formats.Click += new System.EventHandler(this.formats_Click);
             // 
             // filePanel
             // 
@@ -368,7 +347,6 @@
         private System.Windows.Forms.Panel contentsPanel;
         private System.Windows.Forms.Button contents;
         private System.Windows.Forms.FlowLayoutPanel formatFlowLayoutPanel;
-        private System.Windows.Forms.Button formats;
         private System.Windows.Forms.Panel filePanel;
         private System.Windows.Forms.Button open;
         private System.Windows.Forms.Button save;

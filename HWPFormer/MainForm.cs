@@ -5,6 +5,9 @@ using System.Windows.Forms;
 using HWPHelper;
 using System.Collections.Generic;
 
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 namespace HWPFormer
 {
     public partial class MainForm : Form
@@ -98,34 +101,79 @@ namespace HWPFormer
         {
             filePanel.Visible = false;
             contentsPanel.Visible = false;
-            formatFlowLayoutPanel.Visible = false;
-            var templates = new[] { 
-                ("title", "제목"), 
-                ("subtitle", "부제목"),
-                ("subsubtitle", "부부제목"), 
-                ("subsubsubtitle", "부부부제목"),  
-                ("summary", "성과요약"),
-                ("strategy", "전략체계1"), 
-                ("cascading", "전략체계2"), 
-                ("h_table", "가로표1"),
-                ("h_table2", "가로표2"),
-                ("h_table3", "가로표3"),
-                ("h_table_2level", "가로표4"),
-                ("v_table", "세로표1"),
-                ("v_table2", "세로표2"), 
-                ("v_table3", "세로표3")
-            };
-            foreach ( (string name, string text) in templates)
-                {
+            formatFlowLayoutPanel.Visible = true;
 
-                Button btn = CreateSubBtn(name, text);
-                btn.Click += new EventHandler(FormatBtn_Click);
-                formatFlowLayoutPanel.Controls.Add(btn);
-                }
+            /* read json to form format*/
+            JObject jObject = JObject.Parse(File.ReadAllText("menu.json"));
+
+            Console.WriteLine(jObject.ToString());
+
+            foreach (JToken menu in jObject["menus"])
+            {
+                CreateMenu(menu);
+            }
             switchFormPanel(false);
         }
 
-        private Button CreateSubBtn(string name, string text)
+        private void CreateMenu(JToken menu)
+        {
+            JToken btns = menu["btns"];
+            string name = menu["name"].ToString();
+            FlowLayoutPanel panel = CreatePanel(name);
+            foreach (JToken btn in btns)
+            {
+
+                Button button = CreateSubBtn(btn["name"].ToString(), btn["text"].ToString(), btn["image"].ToString());
+                button.Click += new EventHandler(FormatBtn_Click);
+                panel.Controls.Add(button);
+            }
+
+
+            Button panelbtn = CreateBtn(name);
+            panelbtn.Click += new System.EventHandler((object sender, EventArgs e) => { ShowSubMenu(panel);});
+            formatFlowLayoutPanel.Controls.Add(panelbtn);
+            formatFlowLayoutPanel.Controls.Add(panel);
+        }
+
+        private FlowLayoutPanel CreatePanel(string name)
+        {
+            FlowLayoutPanel panel = new FlowLayoutPanel();
+            panel.Name = name;
+
+            panel.AutoSize = true;
+            panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(35)))), ((int)(((byte)(32)))), ((int)(((byte)(39)))));
+            panel.Dock = System.Windows.Forms.DockStyle.Top;
+            panel.Location = new System.Drawing.Point(0, 350);
+            panel.MinimumSize = new System.Drawing.Size(300, 45);
+            panel.Size = new System.Drawing.Size(300, 45);
+            panel.TabIndex = 12;
+            panel.Visible = false;
+
+            return panel;
+        }
+
+        private Button CreateBtn(string name) {
+
+            Button btn = new Button();
+            btn.AutoSize = true;
+            btn.Dock = System.Windows.Forms.DockStyle.Top;
+            btn.BackColor = BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(11)))), ((int)(((byte)(7)))), ((int)(((byte)(17)))));
+            btn.FlatAppearance.BorderSize = 0;
+            btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(21)))), ((int)(((byte)(51)))));
+            btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(129)));
+            btn.ForeColor = System.Drawing.Color.LightGray;
+            btn.Location = new System.Drawing.Point(0, 305);
+            btn.Name = "formats";
+            btn.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
+            btn.Size = new System.Drawing.Size(300, 45);
+            btn.TabIndex = 6;
+            btn.Text = name;
+            btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            btn.UseVisualStyleBackColor = false;
+            return btn;
+        }
+        private Button CreateSubBtn(string name, string text, string image)
         {
             Button btn = new Button();
             btn.AutoSize = true;
@@ -141,6 +189,9 @@ namespace HWPFormer
             btn.Text = text;
             btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btn.UseVisualStyleBackColor = false;
+
+            var path = $"images\\{image}";
+            btn.Image = System.Drawing.Image.FromFile(path);
             return btn;
         }
 
@@ -152,6 +203,11 @@ namespace HWPFormer
             hwp.Select();
         }
 
+        void menuBtn_Click(object sender, EventArgs e)
+        {
+            Button btn = sender as Button;
+            ShowSubMenu(formatFlowLayoutPanel);
+        }
 
         private void ShowSubMenu(Panel subMenu)
         {

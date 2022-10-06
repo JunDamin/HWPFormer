@@ -21,19 +21,13 @@ namespace HWPHelper
 
         public void setupToolBar() => hwp.setupToolBar();
         public void SetupPage() => hwp.SetupPage();
-
         public void Select() => hwp.ctrl.Select();
-
         public void SaveFile() => hwp.SaveFile();
-
         public void SaveAsFile(string path) => hwp.SaveAsFile(path);
-
         public void InsertFile(string path) => hwp.InsertFile(path);
-
         public void OpenFile(string path) => hwp.OpenFile(path);
-
         public void PutFieldText(string key, string text) => hwp.ctrl.PutFieldText(key, text);
-
+        
         public void AskPermission()
         {
             Thread.Sleep(4000);
