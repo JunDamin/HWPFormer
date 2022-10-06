@@ -123,7 +123,7 @@ namespace HWPFormer
             foreach (JToken btn in btns)
             {
 
-                Button button = CreateSubBtn(btn["name"].ToString(), btn["text"].ToString(), btn["image"].ToString());
+                Button button = CreateSubBtn(btn["name"].ToString(), btn["text"].ToString());
                 button.Click += new EventHandler(FormatBtn_Click);
                 panel.Controls.Add(button);
             }
@@ -166,14 +166,14 @@ namespace HWPFormer
             btn.Location = new System.Drawing.Point(0, 305);
             btn.Name = "formats";
             btn.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            btn.Size = new System.Drawing.Size(300, 45);
+            btn.Size = new System.Drawing.Size(500, 45);
             btn.TabIndex = 6;
             btn.Text = name;
             btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btn.UseVisualStyleBackColor = false;
             return btn;
         }
-        private Button CreateSubBtn(string name, string text, string image)
+        private Button CreateSubBtn(string name, string text)
         {
             Button btn = new Button();
             btn.AutoSize = true;
@@ -190,7 +190,7 @@ namespace HWPFormer
             btn.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             btn.UseVisualStyleBackColor = false;
 
-            var path = $"images\\{image}";
+            var path = $"images\\{name}.png";
             btn.Image = System.Drawing.Image.FromFile(path);
             return btn;
         }
@@ -275,5 +275,6 @@ namespace HWPFormer
         {
             hwp.OpenHWP();
         }
+
     }
 }
