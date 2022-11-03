@@ -199,7 +199,11 @@ namespace HWPFormer
         {
             Button btn = sender as Button;
             var path = $"templates\\{btn.Name}.hwp";
+            this.Cursor = new Cursor(Cursor.Current.Handle);
+
+            Cursor.Current = Cursors.WaitCursor;
             hwp.InsertFile(path);
+            Cursor.Current = Cursors.Default;
             hwp.Select();
         }
 

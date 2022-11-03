@@ -37,6 +37,8 @@ namespace HWPHelper
         {
             _ = ctrl.SetToolBar(-1, "#0;1:TOOLBAR_MENU"); // #(position);(show):Toolbar name
             _ = ctrl.SetToolBar(-1, "#1;1:TOOLBAR_STANDARD");
+            _ = ctrl.SetToolBar(-1, "#2;1:TOOLBAR_FORMAT");
+            _ = ctrl.SetToolBar(-1, "#3;1:TOOLBAR_NUMBERBULLET");
             ctrl.ShowToolBar(1);
         }
 

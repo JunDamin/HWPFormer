@@ -261,7 +261,7 @@
             this.version.Name = "version";
             this.version.Size = new System.Drawing.Size(81, 29);
             this.version.TabIndex = 2;
-            this.version.Text = "v.0.0.1";
+            this.version.Text = "v.0.1.0";
             // 
             // LogoName
             // 
@@ -306,7 +306,7 @@
             this.MainContainer.Panel2.Controls.Add(this.axHwpCtrl1);
             this.MainContainer.Panel2MinSize = 0;
             this.MainContainer.Size = new System.Drawing.Size(1550, 1240);
-            this.MainContainer.SplitterDistance = 0;
+            this.MainContainer.SplitterDistance = 25;
             this.MainContainer.SplitterWidth = 1;
             this.MainContainer.TabIndex = 5;
             // 
@@ -315,7 +315,7 @@
             this.ContentFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ContentFlowLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.ContentFlowLayoutPanel.Name = "ContentFlowLayoutPanel";
-            this.ContentFlowLayoutPanel.Size = new System.Drawing.Size(0, 1240);
+            this.ContentFlowLayoutPanel.Size = new System.Drawing.Size(25, 1240);
             this.ContentFlowLayoutPanel.TabIndex = 0;
             // 
             // axHwpCtrl1
@@ -325,7 +325,7 @@
             this.axHwpCtrl1.Location = new System.Drawing.Point(0, 0);
             this.axHwpCtrl1.Name = "axHwpCtrl1";
             this.axHwpCtrl1.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axHwpCtrl1.OcxState")));
-            this.axHwpCtrl1.Size = new System.Drawing.Size(1549, 1240);
+            this.axHwpCtrl1.Size = new System.Drawing.Size(1524, 1240);
             this.axHwpCtrl1.TabIndex = 1;
             // 
             // MainForm
