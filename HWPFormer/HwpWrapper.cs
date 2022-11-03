@@ -66,6 +66,13 @@ namespace HWPHelper
             return res;
         }
 
+
+        public DialogResult NewFileConfirmation()
+        {
+            DialogResult res = MessageBox.Show("새로 만들기를 하면 작성한 내용이 모두 사라집니다 그래도 진행하시겠습니까?", "새로만들기", MessageBoxButtons.YesNoCancel);
+            return res;
+        }
+
         public void NewHWP()
         {
             if (hwp.filePath != string.Empty) AskSave();

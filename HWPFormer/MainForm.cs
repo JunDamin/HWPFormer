@@ -242,8 +242,12 @@ namespace HWPFormer
 
         private void newFile_Click(object sender, EventArgs e)
         {
-            hwp.NewHWP();
-            hwp.Select();
+            var ans = hwp.NewFileConfirmation();
+            if (ans == System.Windows.Forms.DialogResult.Yes)
+            {
+                hwp.NewHWP();
+                hwp.Select();
+            }
         }
 
         private Form activeForm = null;
@@ -277,6 +281,7 @@ namespace HWPFormer
 
         private void open_Click(object sender, EventArgs e)
         {
+           
             hwp.OpenHWP();
         }
 
