@@ -130,7 +130,7 @@ namespace HWPFormer
 
 
             Button panelbtn = CreateBtn(name);
-            panelbtn.Click += new System.EventHandler((object sender, EventArgs e) => { ShowSubMenu(panel);});
+            panelbtn.Click += new System.EventHandler((object sender, EventArgs e) => { ShowSubMenu(panel); hwp.Select();});
             formatFlowLayoutPanel.Controls.Add(panelbtn);
             formatFlowLayoutPanel.Controls.Add(panel);
         }
@@ -211,6 +211,7 @@ namespace HWPFormer
         {
             Button btn = sender as Button;
             ShowSubMenu(formatFlowLayoutPanel);
+            hwp.Select();
         }
 
         private void ShowSubMenu(Panel subMenu)
@@ -226,17 +227,20 @@ namespace HWPFormer
         private void files_Click(object sender, EventArgs e)
         {
             ShowSubMenu(filePanel);
+            hwp.Select();
         }
 
         private void formats_Click(object sender, EventArgs e)
         {
             ShowSubMenu(formatFlowLayoutPanel);
+            hwp.Select();
             switchFormPanel(false);
         }
 
         private void contents_Click(object sender, EventArgs e)
         {
             ShowSubMenu(contentsPanel);
+            hwp.Select();
             switchFormPanel(false);
         }
 

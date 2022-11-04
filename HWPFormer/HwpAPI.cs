@@ -31,7 +31,6 @@ namespace HWPHelper
 
         public void SetupPage()
         {
-
         }
         public void setupToolBar()
         {
