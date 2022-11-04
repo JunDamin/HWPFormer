@@ -122,9 +122,11 @@ namespace HWPFormer
             FlowLayoutPanel panel = CreatePanel(name);
             foreach (JToken btn in btns)
             {
-
+                string nlines = btn["nlines"].ToString();
                 Button button = CreateSubBtn(btn["name"].ToString(), btn["text"].ToString());
-                button.Click += new EventHandler(FormatBtn_Click);
+
+      
+                button.Click += new EventHandler((object sender, EventArgs e) => { FormatBtn_Click(sender, e); hwp.move_nlines(Int32.Parse(nlines)); });
                 panel.Controls.Add(button);
             }
 

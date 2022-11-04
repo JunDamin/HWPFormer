@@ -96,6 +96,14 @@ namespace HWPHelper
             actionSet.Act.Execute(actionSet.Set);
         }
 
+        public void MoveDown(int n)
+        {
+            for (int i = 0; i< n; i++)
+            {
+                var actionSet = GetActionSet("MoveNextParaBegin");
+                actionSet.Act.Execute(actionSet.Set);
+            }
+        }
     }
 }
 

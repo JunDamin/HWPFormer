@@ -114,6 +114,10 @@ namespace HWPHelper
             }
             return true;
         }
+        public void move_nlines(int i)
+        {
+            hwp.MoveDown(i-1);
+        }
 
     }
 }
