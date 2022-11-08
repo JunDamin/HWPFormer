@@ -287,8 +287,12 @@ namespace HWPFormer
 
         private void open_Click(object sender, EventArgs e)
         {
-           
-            hwp.OpenHWP();
+            var ans = hwp.NewFileConfirmation();
+            if (ans == System.Windows.Forms.DialogResult.Yes)
+            {
+                hwp.OpenHWP();
+                hwp.Select();
+            }
         }
 
     }
